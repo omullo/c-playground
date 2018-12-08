@@ -1,3 +1,10 @@
+/**
+ * @author [Frank Omullo]
+ * @email [foo6@cornell.edu]
+ * @create date 2018-12-07 20:46:37
+ * @modify date 2018-12-07 20:46:37
+ * @desc [description]
+*/
 #include <iostream>
 
 //------------------------------------------------------------------------
