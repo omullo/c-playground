@@ -29,6 +29,8 @@ class BinaryTreeInt
 
   void print() const;
 
+  int get_steps() const;
+
   Node* m_root_p;
 
  private:
@@ -36,6 +38,8 @@ class BinaryTreeInt
   void clear_h( Node* node_p );
   void print_h( Node* node_p, int level ) const;
   Node* find_h( Node* node_p, int v ) const;
+
+  static int s_steps;
 
 };
 
@@ -102,6 +106,8 @@ void BinaryTreeInt::clear_h( Node* node_p )
 
 bool BinaryTreeInt::contains( int v ) const
 {
+  s_steps = 0;
+
   if ( m_root_p == nullptr )
     return false;
 
@@ -111,6 +117,8 @@ bool BinaryTreeInt::contains( int v ) const
 
 void BinaryTreeInt::add( int v )
 {
+  s_steps = 0;
+
   if ( m_root_p == nullptr )
     insert_root( v );
 
@@ -126,6 +134,7 @@ void BinaryTreeInt::add( int v )
 BinaryTreeInt::Node* BinaryTreeInt::find_h( Node* node_p, int v ) const
 {
   assert( node_p != nullptr );
+  s_steps++;
 
   if ( v == node_p->value )
     return node_p;
@@ -147,6 +156,13 @@ BinaryTreeInt::Node* BinaryTreeInt::find_h( Node* node_p, int v ) const
   assert( false );
 }
 
+int BinaryTreeInt::get_steps() const
+{
+  return s_steps;
+}
+
+int BinaryTreeInt::s_steps = 0;
+
 //------------------------------------------------------------------------
 // main
 //------------------------------------------------------------------------
@@ -156,18 +172,25 @@ int main( void )
   using namespace std;
 
   BinaryTreeInt bt;
-  for ( int v : { 55, 20, 74, 5, 43, 59, 99, 12, 32 } )
-    bt.add( v );
 
-  std::cout << "Initial tree" << std::endl;
+  int add_steps = 0;
+  for ( int i = 0; i < 100; i++ ) {
+    // bt.add( i );
+    bt.add( rand() % 1000 );
+    add_steps += bt.get_steps();
+  }
+
   bt.print();
 
-  bt.add( 35 );
+  int contains_steps = 0;
+  for ( int i = 0; i < 1000; i++ ) {
+    bt.contains(i);
+    contains_steps += bt.get_steps();
+  }
 
-  std::cout << "Tree after inserting 35" << std::endl;
-  bt.print();
+  std::cout << "avg num of add steps      : " << add_steps/100.0 << std::endl;
+  std::cout << "avg num of contains steps : " << contains_steps/1000.0 << std::endl;
 
   return 0;
 }
-
 
